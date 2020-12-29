@@ -1,5 +1,7 @@
-module.exports.pillReminderMessage = () => {
-	return {
+module.exports.reminderMessage = {
+	type: 'flex',
+	altText: 'Notification! Have you read some books today?',
+	contents: {
 		type: 'bubble',
 		hero: {
 			type: 'image',
@@ -7,7 +9,7 @@ module.exports.pillReminderMessage = () => {
 				'https://nomad.pictures/wp-content/uploads/2016/02/cooking-books-on-table-1024x683.jpg',
 			size: 'full',
 			aspectRatio: '20:13',
-			aspectMode: 'cover'
+			aspectMode: 'cover',
 		},
 		body: {
 			type: 'box',
@@ -47,5 +49,5 @@ module.exports.pillReminderMessage = () => {
 			],
 			flex: 0,
 		},
-	};
+	},
 };
