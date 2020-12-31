@@ -1,0 +1,16 @@
+services:
+  - docker
+env:
+  global:
+    - SHA=$(git rev-parse HEAD)
+script:
+  # I have to do testing here in the future.
+  - echo "HAPPY NEW YEAR 2021 !!"
+after_success:
+  - docker build -t nonkung51/cron-linebot-docker:latest .
+  - docker build -t nonkung51/cron-linebot-docker:$SHA .
+  # Login to docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
+  # Push image to docker hub
+  - docker push nonkung51/cron-linebot-docker:latest
+  - docker push nonkung51/cron-linebot-docker:$SHA
