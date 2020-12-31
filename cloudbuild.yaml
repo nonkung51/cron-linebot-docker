@@ -1,0 +1,17 @@
+steps:
+  # build the container image
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["build", "-t", "gcr.io/cron-linebot-docker/cron-linebot-docker", "."]
+  
+  # Push the container image to container registry
+  - name: "gcr.io/cloud-builders/docker"
+    args: ["push", "gcr.io/cron-linebot-docker/cron-linebot-docker"]
+
+  # Deploy to clud run
+  - name: "gcr.io/cloud-builders/gcloud"
+    args: ["run", "deploy", "webhook-line", "--image", "gcr.io/cron-linebot-docker/cron-linebot-docker", "--region", "asia-southeast1", "--platform", "managed", "--allow-unauthenticated", "--port", "8080"]
+    env:
+      - 'MY_LINE_ID=${_MY_LINE_ID}'
+      - 'LINE_MESSAGING_API_KEY=${_LINE_MESSAGING_API_KEY}'
+images:
+  - gcr.io/cron-linebot-docker/cron-linebot-docker
