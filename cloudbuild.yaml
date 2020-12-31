@@ -7,9 +7,9 @@ steps:
   - name: "gcr.io/cloud-builders/docker"
     args: ["push", "gcr.io/cron-linebot-docker/cron-linebot-docker"]
 
-  # Deploy to clud run
+  # Deploy to cloud run
   - name: "gcr.io/cloud-builders/gcloud"
-    args: ["run", "deploy", "webhook-line", "--image", "gcr.io/cron-linebot-docker/cron-linebot-docker", "--region", "asia-southeast1", "--platform", "managed", "--allow-unauthenticated", "--port", "8080"]
+    args: ["run", "deploy", "cron-linebot-docker", "--image", "gcr.io/cron-linebot-docker/cron-linebot-docker", "--region", "asia-southeast1", "--platform", "managed", "--allow-unauthenticated", "--port", "8080"]
     env:
       - 'MY_LINE_ID=${_MY_LINE_ID}'
       - 'LINE_MESSAGING_API_KEY=${_LINE_MESSAGING_API_KEY}'
