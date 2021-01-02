@@ -1,6 +1,5 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-const CronJob = require('cron').CronJob;
 
 const { reminderMessage } = require('./flexMessage/reminderMessage');
 
@@ -17,10 +16,8 @@ const LINE_HEADER = {
 	Authorization: `Bearer ${process.env.LINE_MESSAGING_API_KEY}`,
 };
 
-// process.env.MY_LINE_ID
 app.post('/', (req, res) => {
 	const body = req.body;
-	// console.log(body.events[0].source);
 	switch (body.events[0].message.type) {
 		case 'text':
 			if (body.events[0].message.text === 'Sure, Did!' && waitingForAns) {
@@ -46,17 +43,11 @@ app.post('/', (req, res) => {
 	}
 });
 
-const job = new CronJob(
-	'00 14 * * *',
-	() => {
-        push([reminderMessage]);
-        waitingForAns = true;
-	},
-	null,
-	true,
-	'Asia/Bangkok'
-);
-job.start();
+app.get('/webhook', (req, res) => {
+	push([reminderMessage]);
+	waitingForAns = true;
+	res.send({});
+});
 
 const reply = (body, messages) => {
 	return request({
