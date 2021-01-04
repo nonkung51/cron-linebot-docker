@@ -5,10 +5,9 @@ const { reminderMessage } = require('./flexMessage/reminderMessage');
 
 const app = express();
 app.use(bodyParser.json());
+const fetch = require('node-fetch');
 
 let waitingForAns = false;
-
-const request = require('request-promise');
 
 const LINE_MESSAGING_API = 'https://api.line.me/v2/bot/message';
 const LINE_HEADER = {
@@ -50,26 +49,25 @@ app.get('/webhook', (req, res) => {
 });
 
 const reply = (body, messages) => {
-	return request({
-		method: `POST`,
-		uri: `${LINE_MESSAGING_API}/reply`,
-		headers: LINE_HEADER,
+	return fetch(`${LINE_MESSAGING_API}/reply`, {
+        method: 'POST',
+        headers: LINE_HEADER,
 		body: JSON.stringify({
 			replyToken: body.events[0].replyToken,
 			messages,
 		}),
-	});
+    })
 };
 
-const push = (messages) =>
-	request({
-		method: 'POST',
-		uri: `${LINE_MESSAGING_API}/push`,
-		headers: LINE_HEADER,
+const push = (messages) => {
+	return fetch(`${LINE_MESSAGING_API}/push`, {
+        method: 'post',
+        headers: LINE_HEADER,
 		body: JSON.stringify({
 			to: process.env.MY_LINE_ID,
 			messages,
 		}),
-	});
+	})
+}
 
 app.listen(8080);
