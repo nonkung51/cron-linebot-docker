@@ -5,10 +5,7 @@ const { reminderMessage } = require('./flexMessage/reminderMessage');
 
 const app = express();
 app.use(bodyParser.json());
-
-let waitingForAns = false;
-
-const request = require('request-promise');
+const fetch = require('node-fetch');
 
 const LINE_MESSAGING_API = 'https://api.line.me/v2/bot/message';
 const LINE_HEADER = {
@@ -16,7 +13,8 @@ const LINE_HEADER = {
 	Authorization: `Bearer ${process.env.LINE_MESSAGING_API_KEY}`,
 };
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
+	res.send({});
 	const body = req.body;
 	switch (body.events[0].message.type) {
 		case 'text':
@@ -30,14 +28,21 @@ app.post('/', (req, res) => {
 						stickerResourceType: 'STATIC',
 					},
                 ]);
-                waitingForAns = false;
 				break;
 			}
 		default:
+			const res = await fetch('https://api.quotable.io/random?maxLength=140');
+			const resJson = await res.json();
 			reply(body, [
 				{
 					type: `text`,
-					text: `I don't quite understand what you mean 😰`,
+					text: `${resJson.content} - ${resJson.author}`,
+				},
+				{
+					type: 'sticker',
+					stickerId: '51626496',
+					packageId: '11538',
+					stickerResourceType: 'STATIC',
 				},
 			]);
 	}
@@ -45,31 +50,29 @@ app.post('/', (req, res) => {
 
 app.get('/webhook', (req, res) => {
 	push([reminderMessage]);
-	waitingForAns = true;
 	res.send({});
 });
 
 const reply = (body, messages) => {
-	return request({
-		method: `POST`,
-		uri: `${LINE_MESSAGING_API}/reply`,
-		headers: LINE_HEADER,
+	return fetch(`${LINE_MESSAGING_API}/reply`, {
+        method: 'POST',
+        headers: LINE_HEADER,
 		body: JSON.stringify({
 			replyToken: body.events[0].replyToken,
 			messages,
 		}),
-	});
+    })
 };
 
-const push = (messages) =>
-	request({
-		method: 'POST',
-		uri: `${LINE_MESSAGING_API}/push`,
-		headers: LINE_HEADER,
+const push = (messages) => {
+	return fetch(`${LINE_MESSAGING_API}/push`, {
+        method: 'post',
+        headers: LINE_HEADER,
 		body: JSON.stringify({
 			to: process.env.MY_LINE_ID,
 			messages,
 		}),
-	});
+	})
+}
 
 app.listen(8080);
