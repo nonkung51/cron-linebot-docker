@@ -7,15 +7,14 @@ const app = express();
 app.use(bodyParser.json());
 const fetch = require('node-fetch');
 
-let waitingForAns = false;
-
 const LINE_MESSAGING_API = 'https://api.line.me/v2/bot/message';
 const LINE_HEADER = {
 	'Content-Type': 'application/json',
 	Authorization: `Bearer ${process.env.LINE_MESSAGING_API_KEY}`,
 };
 
-app.post('/', (req, res) => {
+app.post('/', async (req, res) => {
+	res.send({});
 	const body = req.body;
 	switch (body.events[0].message.type) {
 		case 'text':
@@ -29,14 +28,21 @@ app.post('/', (req, res) => {
 						stickerResourceType: 'STATIC',
 					},
                 ]);
-                waitingForAns = false;
 				break;
 			}
 		default:
+			const res = await fetch('https://api.quotable.io/random?maxLength=140');
+			const resJson = await res.json();
 			reply(body, [
 				{
 					type: `text`,
-					text: `I don't quite understand what you mean 😰`,
+					text: `${resJson.content} - ${resJson.author}`,
+				},
+				{
+					type: 'sticker',
+					stickerId: '51626496',
+					packageId: '11538',
+					stickerResourceType: 'STATIC',
 				},
 			]);
 	}
@@ -44,7 +50,6 @@ app.post('/', (req, res) => {
 
 app.get('/webhook', (req, res) => {
 	push([reminderMessage]);
-	waitingForAns = true;
 	res.send({});
 });
 
