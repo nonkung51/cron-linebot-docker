@@ -18,7 +18,7 @@ app.post('/', async (req, res) => {
 	const body = req.body;
 	switch (body.events[0].message.type) {
 		case 'text':
-			if (body.events[0].message.text === 'Sure, Did!' && waitingForAns) {
+			if (body.events[0].message.text === 'Sure, Did!') {
 				reply(body, [
 					{
 						type: 'sticker',
