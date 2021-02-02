@@ -1,4 +1,4 @@
-module.exports.reminderMessage = ({ cakeAmount, usdPrice }) => {
+module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 	return {
 		type: 'flex',
 		altText: `You have ${cakeAmount} of cake.`,
@@ -23,6 +23,7 @@ module.exports.reminderMessage = ({ cakeAmount, usdPrice }) => {
 						url:
 							'https://pancakeswap.finance/images/cake.svg',
 						margin: 'xl',
+						size: 'md',
 					},
 					{
 						type: 'box',

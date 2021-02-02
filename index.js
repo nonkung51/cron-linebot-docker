@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 
 const { reminderMessage } = require('./flexMessage/reminderMessage');
+const { cakePriceMessage } = require('./flexMessage/cakePriceMessage');
 
 const { getPendingCake } = require('./contractCall');
 
@@ -31,24 +32,23 @@ app.post('/', async (req, res) => {
 						packageId: '1',
 						stickerResourceType: 'STATIC',
 					},
-                ]);
+				]);
 				break;
 			} else if (msgText === 'Cake') {
 				const pendingCake = await getPendingCake();
 				console.log(pendingCake);
 				reply(body, [
-					{
-						type: 'sticker',
-						id: '13288487045964',
-						stickerId: '4',
-						packageId: '1',
-						stickerResourceType: 'STATIC',
-					},
-                ]);
+					cakePriceMessage({
+						cakeAmount: pendingCake,
+						usdPrice: "wait..",
+					}),
+				]);
 				break;
 			}
 		default:
-			const res = await fetch('https://api.quotable.io/random?maxLength=140');
+			const res = await fetch(
+				'https://api.quotable.io/random?maxLength=140'
+			);
 			const resJson = await res.json();
 			reply(body, [
 				{
@@ -72,24 +72,24 @@ app.get('/webhook', (req, res) => {
 
 const reply = (body, messages) => {
 	return fetch(`${LINE_MESSAGING_API}/reply`, {
-        method: 'POST',
-        headers: LINE_HEADER,
+		method: 'POST',
+		headers: LINE_HEADER,
 		body: JSON.stringify({
 			replyToken: body.events[0].replyToken,
 			messages,
 		}),
-    })
+	});
 };
 
 const push = (messages) => {
 	return fetch(`${LINE_MESSAGING_API}/push`, {
-        method: 'post',
-        headers: LINE_HEADER,
+		method: 'post',
+		headers: LINE_HEADER,
 		body: JSON.stringify({
 			to: process.env.MY_LINE_ID,
 			messages,
 		}),
-	})
-}
+	});
+};
 
 app.listen(8080);
