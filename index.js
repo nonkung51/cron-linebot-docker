@@ -34,13 +34,12 @@ app.post('/', async (req, res) => {
 					},
 				]);
 				break;
-			} else if (msgText === 'Cake') {
+			} else if (msgText.toLowerCase().includes('cake')) {
 				const pendingCake = await getPendingCake();
-				console.log(pendingCake);
+				const cakeAmount = pendingCake.toFixed(3);
 				reply(body, [
 					cakePriceMessage({
-						cakeAmount: pendingCake,
-						usdPrice: "wait..",
+						cakeAmount,
 					}),
 				]);
 				break;
