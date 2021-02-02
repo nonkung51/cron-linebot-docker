@@ -36,10 +36,10 @@ app.post('/', async (req, res) => {
 				break;
 			} else if (msgText === 'Cake') {
 				const pendingCake = await getPendingCake();
-				console.log(pendingCake);
+				const cakeAmount = pendingCake.toFixed(3);
 				reply(body, [
 					cakePriceMessage({
-						cakeAmount: pendingCake,
+						cakeAmount,
 						usdPrice: "wait..",
 					}),
 				]);

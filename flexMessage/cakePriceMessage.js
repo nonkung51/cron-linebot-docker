@@ -21,7 +21,7 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 					{
 						type: 'image',
 						url:
-							'https://pancakeswap.finance/images/cake.svg',
+							'https://raw.githubusercontent.com/nonkung51/cron-linebot-docker/main/res/cake.png',
 						margin: 'xl',
 						size: 'md',
 					},
