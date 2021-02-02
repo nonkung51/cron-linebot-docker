@@ -1,7 +1,7 @@
-module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
+module.exports.cakePriceMessage = ({ cakeAmount }) => {
 	return {
 		type: 'flex',
-		altText: `You have ${cakeAmount} of cake.`,
+		altText: `You have ${cakeAmount} of cake!`,
 		contents: {
 			type: 'bubble',
 			body: {
@@ -10,7 +10,7 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 				contents: [
 					{
 						type: 'text',
-						text: 'Pending Cake',
+						text: 'Farms & Staking',
 						weight: 'bold',
 						size: 'xl',
 						color: '#9e82d1',
@@ -41,19 +41,6 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 								text: 'Cake to harvest',
 								align: 'center',
 								offsetBottom: 'none',
-							},
-							{
-								type: 'text',
-								text: `${usdPrice}`,
-								size: 'xxl',
-								color: '#ffffff',
-								align: 'center',
-								margin: '20px',
-							},
-							{
-								type: 'text',
-								text: 'USD',
-								align: 'center',
 							},
 						],
 						backgroundColor: '#a28bd4',
