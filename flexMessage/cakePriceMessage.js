@@ -1,4 +1,4 @@
-module.exports.cakePriceMessage = ({ cakeAmount }) => {
+module.exports.cakePriceMessage = ({ cakeAmount, thbPrice }) => {
 	return {
 		type: 'flex',
 		altText: `You have ${cakeAmount} of cake!`,
@@ -39,6 +39,20 @@ module.exports.cakePriceMessage = ({ cakeAmount }) => {
 							{
 								type: 'text',
 								text: 'Cake to harvest',
+								align: 'center',
+								offsetBottom: 'none',
+							},
+							{
+								type: 'text',
+								text: `${thbPrice}`,
+								size: 'xxl',
+								color: '#ffffff',
+								align: 'center',
+								margin: 'xl'
+							},
+							{
+								type: 'text',
+								text: 'Baht',
 								align: 'center',
 								offsetBottom: 'none',
 							},

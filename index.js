@@ -21,7 +21,6 @@ app.post('/', async (req, res) => {
 	const body = req.body;
 	switch (body.events[0].message.type) {
 		case 'text':
-			// getPendingCake
 			const msgText = body.events[0].message.text;
 			if (msgText === 'Sure, Did!') {
 				reply(body, [
@@ -37,9 +36,15 @@ app.post('/', async (req, res) => {
 			} else if (msgText.toLowerCase().includes('cake')) {
 				const pendingCake = await getPendingCake();
 				const cakeAmount = pendingCake.toFixed(3);
+				const res = await fetch(
+					'https://api.coingecko.com/api/v3/simple/price?ids=pancakeswap-token&vs_currencies=usd%2Cthb'
+				);
+				const resJson = await res.json();
+				const thbPrice = (cakeAmount * resJson['pancakeswap-token']['thb']).toFixed(2);
 				reply(body, [
 					cakePriceMessage({
 						cakeAmount,
+						thbPrice
 					}),
 				]);
 				break;
