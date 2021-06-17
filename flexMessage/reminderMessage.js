@@ -1,12 +1,23 @@
 module.exports.reminderMessage = {
 	type: 'flex',
+	quickReply: {
+		items: [
+			{
+				type: 'text',
+				action: {
+					type: 'message',
+					label: 'Sure, Did!',
+					text: 'Sure, Did!',
+				},
+			},
+		],
+	},
 	altText: 'Notification! Have you read some books today?',
 	contents: {
 		type: 'bubble',
 		hero: {
 			type: 'image',
-			url:
-				'https://nomad.pictures/wp-content/uploads/2016/02/cooking-books-on-table-1024x683.jpg',
+			url: 'https://nomad.pictures/wp-content/uploads/2016/02/cooking-books-on-table-1024x683.jpg',
 			size: 'full',
 			aspectRatio: '20:13',
 			aspectMode: 'cover',
