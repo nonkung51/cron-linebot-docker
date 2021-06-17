@@ -1,5 +1,5 @@
 const Web3 = require('web3');
-const BigNumber = require('bignumber.js')
+const BigNumber = require('bignumber.js');
 
 // mainnet
 const web3 = new Web3('https://bsc-dataseed1.binance.org:443');
@@ -10,13 +10,15 @@ const contract = new web3.eth.Contract(
 );
 
 const getPendingCake = async () => {
-    const pendingCakeBN = await contract.methods
-        .pendingCake(62, '0xbE5539dCE374c2Dfa009c3fb39229578E71BBb9B')
-        .call();
-    const pendingCake = new BigNumber(pendingCakeBN).div(new BigNumber(10).pow(18)).toNumber()
-    return pendingCake;
-}
+	const pendingCakeBN = await contract.methods
+		.pendingCake(62, process.env.WALLET_ADDRESS)
+		.call();
+	const pendingCake = new BigNumber(pendingCakeBN)
+		.div(new BigNumber(10).pow(18))
+		.toNumber();
+	return pendingCake;
+};
 
 module.exports = {
-    getPendingCake
-}
+	getPendingCake,
+};

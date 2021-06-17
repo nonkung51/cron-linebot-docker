@@ -1,7 +1,7 @@
-module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
+module.exports.cakePriceMessage = ({ cakeAmount, thbPrice }) => {
 	return {
 		type: 'flex',
-		altText: `You have ${cakeAmount} of cake.`,
+		altText: `You have ${cakeAmount} of cake!`,
 		contents: {
 			type: 'bubble',
 			body: {
@@ -10,7 +10,7 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 				contents: [
 					{
 						type: 'text',
-						text: 'Pending Cake',
+						text: 'Farms & Staking',
 						weight: 'bold',
 						size: 'xl',
 						color: '#9e82d1',
@@ -21,7 +21,7 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 					{
 						type: 'image',
 						url:
-							'https://pancakeswap.finance/images/cake.svg',
+							'https://raw.githubusercontent.com/nonkung51/cron-linebot-docker/main/res/cake.png',
 						margin: 'xl',
 						size: 'md',
 					},
@@ -44,16 +44,17 @@ module.exports.cakePriceMessage = ({ cakeAmount, usdPrice }) => {
 							},
 							{
 								type: 'text',
-								text: `${usdPrice}`,
+								text: `${thbPrice}`,
 								size: 'xxl',
 								color: '#ffffff',
 								align: 'center',
-								margin: '20px',
+								margin: 'xl'
 							},
 							{
 								type: 'text',
-								text: 'USD',
+								text: 'Baht',
 								align: 'center',
+								offsetBottom: 'none',
 							},
 						],
 						backgroundColor: '#a28bd4',
