@@ -1,5 +1,6 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const cron = require('node-cron');
 
 const { reminderMessage } = require('./flexMessage/reminderMessage');
 const { cakePriceMessage } = require('./flexMessage/cakePriceMessage');
@@ -40,11 +41,13 @@ app.post('/', async (req, res) => {
 					'https://api.coingecko.com/api/v3/simple/price?ids=pancakeswap-token&vs_currencies=usd%2Cthb'
 				);
 				const resJson = await res.json();
-				const thbPrice = (cakeAmount * resJson['pancakeswap-token']['thb']).toFixed(2);
+				const thbPrice = (
+					cakeAmount * resJson['pancakeswap-token']['thb']
+				).toFixed(2);
 				reply(body, [
 					cakePriceMessage({
 						cakeAmount,
-						thbPrice
+						thbPrice,
 					}),
 				]);
 				break;
@@ -69,9 +72,8 @@ app.post('/', async (req, res) => {
 	}
 });
 
-app.get('/webhook', (req, res) => {
+cron.schedule('* * * * *', () => {
 	push([reminderMessage]);
-	res.send({});
 });
 
 const reply = (body, messages) => {
