@@ -72,7 +72,7 @@ app.post('/', async (req, res) => {
 	}
 });
 
-cron.schedule('00 14 * * *', () => {
+cron.schedule('00 10 * * *', () => {
 	push([reminderMessage]);
 });
 
